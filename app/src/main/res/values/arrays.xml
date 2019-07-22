@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="gender"><item>Kobieta</item><item>Mezczyzna</item></string-array>
+    <string-array name="yesNo"><item>Nie</item><item>Tak</item></string-array>
+    <string-array name="hand"><item> Lewa </item> <item> Prawa</item>></string-array>
+</resources>
