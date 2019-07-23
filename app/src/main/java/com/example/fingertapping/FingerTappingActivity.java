@@ -17,10 +17,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -29,6 +35,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.TreeMap;
 
 @SuppressWarnings("IntegerDivisionInFloatingPointContext")
 public class FingerTappingActivity extends AppCompatActivity {
@@ -57,13 +64,22 @@ public class FingerTappingActivity extends AppCompatActivity {
     private ImageView rightAim;
     private TextView twoTapInstruction;
     private int secondsPass = 0;
+    private Handler handler = new Handler();
+    int delay = 500; //milliseconds
 
 
-    Handler handler = new Handler();
-    int delay = 1000; //milliseconds
-
-
-    void aimDisplay() {
+    private Map<String, String> convertArrayToMap(ArrayList<CharSequence> user){
+        Map<String, String> map = new TreeMap<>();
+        map.put("name", user.get(0).toString());
+        map.put("age", user.get(1).toString());
+        map.put("gender", user.get(2).toString());
+        map.put("parkinson", user.get(3).toString());
+        map.put("dominantHand", user.get(4).toString());
+        map.put("usedHand", user.get(5).toString());
+        map.put("description", user.get(6).toString());
+        return map;
+    }
+    private void aimDisplay() {
         flag = !flag;
         if (flag) twoTapInstruction.setTextColor(Color.BLUE);
         else twoTapInstruction.setTextColor(Color.BLACK);
@@ -114,8 +130,7 @@ public class FingerTappingActivity extends AppCompatActivity {
             public void run(){
                 if(counter>1){
 
-                    if (secondsPass < 20) {
-
+                    if (secondsPass < 40) {
                         if (secondsPass % 2 == 0) {
                             aimDisplay();
                         } else {
@@ -123,13 +138,30 @@ public class FingerTappingActivity extends AppCompatActivity {
                             leftAim.setVisibility(View.INVISIBLE);
                         }
                         secondsPass++;
-                        if (secondsPass == 19) endOfMeasure();
+                        if (secondsPass == 39) endOfMeasure();
                     }
                 }
                 handler.postDelayed(this, delay);
             }
         }, delay);
 
+
+
+        Query q = db.collection("measurements")
+                .whereEqualTo("user data.name","sara");
+
+        q.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 
 
@@ -234,23 +266,31 @@ public class FingerTappingActivity extends AppCompatActivity {
         measuredData.put("sideValue", sideValue);
         measuredData.put("distL", distanceLeft);
         measuredData.put("distR", distanceRight);
-        measuredData.put("user data", userData);
+        measuredData.put("user data", convertArrayToMap(userData));
         measuredData.put("shownAim", whichIsShown);
 
-        db.collection(fileName)
-                .add(measuredData)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        db.collection("measurements").document(fileName).set(measuredData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
+                        Log.w(TAG, "Error writing document", e);
                     }
                 });
+
+
+// Create a reference to the cities collection
+
+
+// Create a query against the collection.
+       // Query capitalCities = db.collection("measurements").whereEqualTo("user data", "sara");
+
+
 
 
         measuredData = new HashMap<>();
