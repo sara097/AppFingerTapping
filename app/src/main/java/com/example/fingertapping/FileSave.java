@@ -17,10 +17,10 @@ public class FileSave {
         this.context=con;
         this.text=text;
         this.name=name+".txt";
-        saveData();
+
     }
 
-    private void saveData() {
+   void saveData() {
 
         try {
             //utworzenie pliku do zapisu

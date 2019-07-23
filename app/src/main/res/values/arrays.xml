@@ -2,5 +2,5 @@
 <resources>
     <string-array name="gender"><item>Kobieta</item><item>Mezczyzna</item></string-array>
     <string-array name="yesNo"><item>Nie</item><item>Tak</item></string-array>
-    <string-array name="hand"><item> Lewa </item> <item> Prawa</item>></string-array>
+    <string-array name="hand"><item> Prawa </item> <item> Lewa</item>></string-array>
 </resources>

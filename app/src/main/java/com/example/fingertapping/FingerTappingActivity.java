@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -55,6 +56,32 @@ public class FingerTappingActivity extends AppCompatActivity {
     private ImageView leftAim;
     private ImageView rightAim;
     private TextView twoTapInstruction;
+    private int secondsPass = 0;
+
+
+    Handler handler = new Handler();
+    int delay = 1000; //milliseconds
+
+
+    void aimDisplay() {
+        flag = !flag;
+        if (flag) twoTapInstruction.setTextColor(Color.BLUE);
+        else twoTapInstruction.setTextColor(Color.BLACK);
+        rightAim.setVisibility(View.INVISIBLE);
+        leftAim.setVisibility(View.INVISIBLE);
+
+        Random r = new Random();
+        int i1 = r.nextInt(2);
+        if (i1 == 1) { //lewa
+            leftAim.setVisibility(View.VISIBLE);
+            whichIsShown.add(-1);
+        } else { //prawa
+
+            rightAim.setVisibility(View.VISIBLE);
+            whichIsShown.add(1);
+        }
+    }
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -62,11 +89,11 @@ public class FingerTappingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_two_tap);
         Intent intent = getIntent();
-        userData=intent.getCharSequenceArrayListExtra("UserData");
+        userData = intent.getCharSequenceArrayListExtra("UserData");
         info = (TextView) findViewById(R.id.twoTapInfo);
         leftAim = (ImageView) findViewById(R.id.leftAim);
         rightAim = (ImageView) findViewById(R.id.rightAim);
-        twoTapInstruction =  (TextView) findViewById(R.id.twoTapInstruction);
+        twoTapInstruction = (TextView) findViewById(R.id.twoTapInstruction);
         ConstraintLayout layout = findViewById(R.id.layout);
         layout.setOnTouchListener(handleTouch);
 
@@ -83,47 +110,43 @@ public class FingerTappingActivity extends AppCompatActivity {
         centreXL = i[0] + (leftAim.getWidth() / 2);
         centreYL = i[1] - (leftAim.getHeight() / 4);
 
+        handler.postDelayed(new Runnable(){
+            public void run(){
+                if(counter>1){
+
+                    if (secondsPass < 20) {
+
+                        if (secondsPass % 2 == 0) {
+                            aimDisplay();
+                        } else {
+                            rightAim.setVisibility(View.INVISIBLE);
+                            leftAim.setVisibility(View.INVISIBLE);
+                        }
+                        secondsPass++;
+                        if (secondsPass == 19) endOfMeasure();
+                    }
+                }
+                handler.postDelayed(this, delay);
+            }
+        }, delay);
+
     }
+
+
 
     private float calculateDist(float centreX, float centreY, float x, float y) {
         return (float) Math.sqrt(Math.pow((x - centreX), 2) + Math.pow((y - centreY), 2));
     }
-    private long tempMills=10000;
+
     private boolean flag = true;
     private View.OnTouchListener handleTouch = new View.OnTouchListener() {
         @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View v, MotionEvent event) {
+
             if (counter == 1) {
                 leftAim.setVisibility(View.INVISIBLE);
                 rightAim.setVisibility(View.INVISIBLE);
-                new CountDownTimer(10000, 1000) {
-                    public void onTick(long millisUntilFinished) {
-                        if(millisUntilFinished< tempMills-200){
-                            flag = !flag;
-                            if(flag) twoTapInstruction.setTextColor(Color.BLUE);
-                            else twoTapInstruction.setTextColor(Color.BLACK);
-
-                        leftAim.setVisibility(View.INVISIBLE);
-                        rightAim.setVisibility(View.INVISIBLE);
-                        Random r = new Random();
-                        int i1 = r.nextInt(2);
-                        System.out.println("heheszki" + millisUntilFinished+"aaaaa"+i1);
-                        if(i1 == 1){ //lewa
-                                leftAim.setVisibility(View.VISIBLE);
-                                whichIsShown.add(-1);
-                        }else { //prawa
-                                rightAim.setVisibility(View.VISIBLE);
-                                whichIsShown.add(1);
-                        }
-                        tempMills=millisUntilFinished;
-                    }
-                    }
-
-                    public void onFinish() {
-                        if (times.size() > 5) endOfMeasure();
-                    }
-                }.start();
             }
 
             long time;
@@ -131,6 +154,7 @@ public class FingerTappingActivity extends AppCompatActivity {
                 case MotionEvent.ACTION_DOWN:
                     float x = event.getX();
                     float y = event.getY();
+
                     //wziac czas dotkniecia i po ktorej stronie
                     Date date = new Date();
                     if (counter == 0) {
@@ -197,13 +221,14 @@ public class FingerTappingActivity extends AppCompatActivity {
 
 
     private void endOfMeasure() {
-
+        rightAim.setVisibility(View.GONE);
+        leftAim.setVisibility(View.GONE);
         info.setText(getString(R.string.endOfMeasure));
         @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd;HH:mm:ss");
         Date date = new Date();
         String fileName = "measurement " + dateFormat.format(date);
         data.append(userData.toString());
-        new FileSave(this, fileName, data.toString());
+        new FileSave(this, fileName, data.toString()).saveData();
 
         measuredData.put("time", times);
         measuredData.put("sideValue", sideValue);
@@ -228,14 +253,13 @@ public class FingerTappingActivity extends AppCompatActivity {
                 });
 
 
-
         measuredData = new HashMap<>();
         times = new ArrayList<>();
         sideValue = new ArrayList<>();
         distanceLeft = new ArrayList<>();
         distanceRight = new ArrayList<>();
         data = new StringBuilder();
-        whichIsShown=new ArrayList<>();
+        whichIsShown = new ArrayList<>();
     }
 
 
