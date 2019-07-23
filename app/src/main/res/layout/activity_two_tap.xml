@@ -102,4 +102,13 @@
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/aim" />
 
+    <CheckBox
+        android:id="@+id/withSound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="dźwięk"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="7dp" />
+
 </android.support.constraint.ConstraintLayout>

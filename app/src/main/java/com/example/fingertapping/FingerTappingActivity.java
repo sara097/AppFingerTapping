@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,8 +22,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -66,9 +65,10 @@ public class FingerTappingActivity extends AppCompatActivity {
     private int secondsPass = 0;
     private Handler handler = new Handler();
     int delay = 500; //milliseconds
+    private CheckBox withSound;
+    private MediaPlayer mp;
 
-
-    private Map<String, String> convertArrayToMap(ArrayList<CharSequence> user){
+    private Map<String, String> convertArrayToMap(ArrayList<CharSequence> user) {
         Map<String, String> map = new TreeMap<>();
         map.put("name", user.get(0).toString());
         map.put("age", user.get(1).toString());
@@ -79,6 +79,7 @@ public class FingerTappingActivity extends AppCompatActivity {
         map.put("description", user.get(6).toString());
         return map;
     }
+
     private void aimDisplay() {
         flag = !flag;
         if (flag) twoTapInstruction.setTextColor(Color.BLUE);
@@ -117,7 +118,8 @@ public class FingerTappingActivity extends AppCompatActivity {
         Point size = new Point();
         display.getSize(size);
         width = size.x;
-
+        withSound = (CheckBox) findViewById(R.id.withSound);
+        mp = MediaPlayer.create(this, R.raw.beep);
         int[] i = new int[2];
         rightAim.getLocationInWindow(i);
         centreXR = i[0] + (rightAim.getWidth() / 2);
@@ -126,13 +128,14 @@ public class FingerTappingActivity extends AppCompatActivity {
         centreXL = i[0] + (leftAim.getWidth() / 2);
         centreYL = i[1] - (leftAim.getHeight() / 4);
 
-        handler.postDelayed(new Runnable(){
-            public void run(){
-                if(counter>1){
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                if (counter > 1) {
 
                     if (secondsPass < 40) {
                         if (secondsPass % 2 == 0) {
                             aimDisplay();
+                            if (withSound.isChecked()) mp.start();
                         } else {
                             rightAim.setVisibility(View.INVISIBLE);
                             leftAim.setVisibility(View.INVISIBLE);
@@ -146,24 +149,22 @@ public class FingerTappingActivity extends AppCompatActivity {
         }, delay);
 
 
-
         Query q = db.collection("measurements")
-                .whereEqualTo("user data.name","sara");
+                .whereEqualTo("user data.name", "sara");
 
         q.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d(TAG, document.getId() + " => " + document.getData());
                     }
-                });
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
     }
-
 
 
     private float calculateDist(float centreX, float centreY, float x, float y) {
@@ -288,9 +289,7 @@ public class FingerTappingActivity extends AppCompatActivity {
 
 
 // Create a query against the collection.
-       // Query capitalCities = db.collection("measurements").whereEqualTo("user data", "sara");
-
-
+        // Query capitalCities = db.collection("measurements").whereEqualTo("user data", "sara");
 
 
         measuredData = new HashMap<>();
