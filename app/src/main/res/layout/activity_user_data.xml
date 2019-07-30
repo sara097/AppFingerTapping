@@ -11,28 +11,64 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Podaj swoje dane"
+        android:text="@string/podaj_swoje_dane"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="30sp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/idLabel"
+        android:id="@+id/identLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="@string/userID"
+        android:text="@string/identyfikator_badaj_cego"
         android:textColor="#000000"
         android:textSize="18sp" />
 
     <EditText
-        android:id="@+id/id"
+        android:id="@+id/ident"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
-        android:hint="@string/userID"
+        android:hint="@string/identyfikator"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/nameLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/imie"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="Imię"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/lastNameLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/nazwisko"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/lastName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="@string/nazwisko"
         android:inputType="textPersonName" />
 
     <TextView
@@ -42,7 +78,8 @@
         android:layout_weight="1"
         android:text="@string/genderLabel"
         android:textColor="#000000"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        />
 
     <Spinner
         android:id="@+id/gender"
@@ -142,7 +179,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:onClick="startFingerTapping"
-        android:text="Zacznij pomiar" />
+        android:text="Przejdź dalej" />
 
     <TextView
         android:id="@+id/alertLabel"

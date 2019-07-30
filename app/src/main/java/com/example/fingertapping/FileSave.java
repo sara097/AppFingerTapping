@@ -4,9 +4,14 @@ import android.content.Context;
 import android.os.Environment;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 
 public class FileSave {
     private Context context;
@@ -17,17 +22,20 @@ public class FileSave {
         this.context=con;
         this.text=text;
         this.name=name+".txt";
-
     }
 
-   void saveData() {
+    public FileSave(Context context) {
+        this.context = context;
+    }
+
+    void saveData(boolean append) {
 
         try {
             //utworzenie pliku do zapisu
             File path = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_DOCUMENTS);
             File myFile = new File(path, name);
-            FileOutputStream fOut = new FileOutputStream(myFile,true);
+            FileOutputStream fOut = new FileOutputStream(myFile,append);
             OutputStreamWriter out = new OutputStreamWriter(fOut);
             //zapisanie do pliku
             out.write(text);
@@ -45,5 +53,32 @@ public class FileSave {
 
         }
 
+    }
+
+    public ArrayList<Integer> readSettings() {
+
+        ArrayList<Integer> output=new ArrayList<>();
+        try {
+            File path = Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_DOCUMENTS);
+            File myFile = new File(path, "settings.txt");
+            InputStream inputStream = new FileInputStream(myFile);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    inputStream));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                for (String s : line.split(";")) {
+                    output.add(Integer.valueOf(s));
+                }
+            }
+            reader.close();
+            inputStream.close();
+
+        } catch (java.io.IOException e) {
+            //obsługa wyjątku wraz z wyswietleniem uzytkownikowi komunikatu
+            Toast.makeText(context, "Cannot read data", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+        return output;
     }
 }

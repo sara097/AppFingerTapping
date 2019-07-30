@@ -1,5 +1,5 @@
 <resources>
-    <string name ="app_name">FingerTappingApplication</string>
+    <string name="app_name">FingerTappingApplication</string>
     <string name="taptwoTest">Test podwójnego klikania</string>
     <string name="startBtn">Start</string>
     <string name="browseInfo">Przeglądaj pliki</string>
@@ -9,4 +9,10 @@
     <string name="additionalInfo">Dodatkowe informacje</string>
     <string name="genderLabel">Płeć</string>
     <string name="isParkinson">Czy chorujesz na chorobę Parkinsona</string>
+    <string name="nazwisko">Nazwisko</string>
+    <string name="imi">Imię</string>
+    <string name="identyfikator_badaj_cego">Identyfikator badającego</string>
+    <string name="imie">Imię</string>
+    <string name="podaj_swoje_dane">Podaj swoje dane</string>
+    <string name="identyfikator">Identyfikator</string>
 </resources>

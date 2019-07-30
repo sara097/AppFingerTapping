@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingsActivity">
+
+    <TextView
+        android:id="@+id/timeLabel"
+        android:layout_width="133dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="56dp"
+        android:text="Czas trwania badań [s]"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settingsLabel" />
+
+    <TextView
+        android:id="@+id/intervalLabel"
+        android:layout_width="119dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="292dp"
+        android:text="Interwał [ms]"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timeLabel" />
+
+    <TextView
+        android:id="@+id/settingsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="172dp"
+        android:text="Ustawienia"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/time"
+        android:layout_width="106dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="52dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="20"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.705"
+        app:layout_constraintStart_toEndOf="@+id/timeLabel"
+        app:layout_constraintTop_toBottomOf="@+id/settingsLabel" />
+
+    <EditText
+        android:id="@+id/interval"
+        android:layout_width="109dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="72dp"
+        android:layout_marginBottom="320dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="750"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/intervalLabel"
+        app:layout_constraintTop_toBottomOf="@+id/time" />
+
+    <Button
+        android:id="@+id/Zapisz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="156dp"
+        android:onClick="saveClicked"
+        android:text="Zapisz"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="OnClick" />
+</android.support.constraint.ConstraintLayout>
