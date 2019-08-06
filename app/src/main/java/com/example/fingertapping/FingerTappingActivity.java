@@ -35,9 +35,8 @@ import java.util.TreeMap;
 public class FingerTappingActivity extends AppCompatActivity {
 
     private static final String TAG = "FingerTapping";
-    private long firstTime;
+    private long firstTime = 0;
     private float width;
-    private TextView info;
     private StringBuilder data = new StringBuilder(); //string builder przechowujacy dane, ktore mozna nastepnie zapisac do pliku
     private int counter = 0;
 
@@ -45,6 +44,7 @@ public class FingerTappingActivity extends AppCompatActivity {
     private ArrayList<Long> times = new ArrayList<>();
     private ArrayList<Integer> sideValue = new ArrayList<>(); // 0 - uniesienie paca, 10 - prawa strona, -10 - lewa strona
     private ArrayList<Float> distanceLeft = new ArrayList<>();
+    private ArrayList<Long> aimTime = new ArrayList<>();
 
     private Button start;
     private Button instruct;
@@ -58,6 +58,7 @@ public class FingerTappingActivity extends AppCompatActivity {
     private ArrayList<Integer> whichIsShown = new ArrayList<>();
     private ImageView leftAim;
     private ImageView rightAim;
+
     private TextView twoTapInstruction;
     private int secondsPass = 0;
     private Handler handler = new Handler();
@@ -65,46 +66,32 @@ public class FingerTappingActivity extends AppCompatActivity {
 
     private boolean flag = true;
     private boolean measureFlag = false;
-    int time;
-    int interval;
-    int[] measures;
+    private int time;
+    private int interval;
+    private int[] measures;
 
     private LinearLayout left;
     private LinearLayout right;
+    ArrayList<Integer> order;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tapping);
-        start=(Button) findViewById(R.id.start);
-        instruct=(Button) findViewById(R.id.instruct);
+        start = (Button) findViewById(R.id.start);
+        instruct = (Button) findViewById(R.id.instruct);
         left = (LinearLayout) findViewById(R.id.left);
-        right = (LinearLayout)  findViewById(R.id.right);
+        right = (LinearLayout) findViewById(R.id.right);
         measureFlag = false;
         readSettings();
         Intent intent = getIntent();
         userData = intent.getCharSequenceArrayListExtra("UserData");
-        ArrayList<Integer> order = new ArrayList<>();
         measures = new int[0];
-        for (int i : intent.getExtras().getIntArray("order")) {
-            order.add(i);
-        }
-        System.out.println(order.size());
-        if (order.size() < 4) {
-            category = order.get(0);
-            System.out.println(category);
-            order.remove(0);
 
-            measures = new int[order.size()];
-            for (int i = 0; i < order.size(); i++) {
-                measures[i] = order.get(i);
-            }
-        } else {
-            category = intent.getExtras().getInt("category");
-        }
+        order = readOrderOfMeasurements(intent);
+        getCategory(intent, order);
 
-        info = (TextView) findViewById(R.id.twoTapInfo);
         leftAim = (ImageView) findViewById(R.id.leftAim);
         rightAim = (ImageView) findViewById(R.id.rightAim);
         twoTapInstruction = (TextView) findViewById(R.id.twoTapInstruction);
@@ -123,30 +110,50 @@ public class FingerTappingActivity extends AppCompatActivity {
         centreXL = i[0] + (leftAim.getWidth() / 2);
         centreYL = i[1] - (leftAim.getHeight() / 4);
 
-        final int numberOfMeasurements= (time*1000)/interval+1;
+        final int numberOfMeasurements = ((time * 1000) / interval + 1);
         handler.postDelayed(new Runnable() {
             public void run() {
                 if (measureFlag) {
-
+                    Date date = new Date();
                     if (secondsPass < numberOfMeasurements) {
-                        if (secondsPass % 2 == 0) {
-                            aimDisplay();
-                        } else {
-                            rightAim.setVisibility(View.INVISIBLE);
-                            leftAim.setVisibility(View.INVISIBLE);
-                            left.setVisibility(View.INVISIBLE);
-                            right.setVisibility(View.INVISIBLE);
-                        }
+                        if (category != 0)
+                            if (secondsPass % 2 == 0) {
+                                aimDisplay();
+                            } else {
+                                hideAim(rightAim, View.INVISIBLE, leftAim);
+                            }
+                        else aimDisplay();
                         secondsPass++;
-                        if (secondsPass == (numberOfMeasurements-1)) endOfMeasure();
+                        aimTime.add(date.getTime() - firstTime);
+                        if (secondsPass == (numberOfMeasurements - 1)) endOfMeasure();
                     }
                 }
                 handler.postDelayed(this, interval);
             }
         }, interval);
 
+    }
 
+    private void getCategory(Intent intent, ArrayList<Integer> order) {
+        if (order.size() < 4) {
+            category = order.get(0);
+            order.remove(0);
+            measures = new int[order.size()];
+            for (int i = 0; i < order.size(); i++) {
+                measures[i] = order.get(i);
+            }
+        } else {
+            category = intent.getExtras().getInt("category");
+        }
+    }
 
+    private ArrayList<Integer> readOrderOfMeasurements(Intent intent) {
+        ArrayList<Integer> order = new ArrayList<>();
+
+        for (int i : intent.getExtras().getIntArray("order")) {
+            order.add(i);
+        }
+        return order;
     }
 
     private void readSettings() {
@@ -156,14 +163,18 @@ public class FingerTappingActivity extends AppCompatActivity {
     }
 
     public void instructionClicked(View view) {
+        Intent i = new Intent(getBaseContext(), InstructionActivity.class);
+        i.putExtra("order", measures);
+        i.putExtra("UserData", userData);
+        i.putExtra("category", category);
+        startActivity(i);
     }
 
     public void startClicked(View view) {
         measureFlag = true;
-        leftAim.setVisibility(View.INVISIBLE);
-        rightAim.setVisibility(View.INVISIBLE);
-        left.setVisibility(View.INVISIBLE);
-        right.setVisibility(View.INVISIBLE);
+        firstTime=new Date().getTime();
+        if(category!=0)
+        hideAim(leftAim, View.INVISIBLE, rightAim);
         start.setVisibility(View.GONE);
         instruct.setVisibility(View.GONE);
     }
@@ -179,10 +190,8 @@ public class FingerTappingActivity extends AppCompatActivity {
         public boolean onTouch(View v, MotionEvent event) {
 
             if (counter == 0) {
-                leftAim.setVisibility(View.INVISIBLE);
-                rightAim.setVisibility(View.INVISIBLE);
-                left.setVisibility(View.INVISIBLE);
-                right.setVisibility(View.INVISIBLE);
+                if(category!=0)
+                hideAim(leftAim, View.INVISIBLE, rightAim);
             }
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -191,7 +200,7 @@ public class FingerTappingActivity extends AppCompatActivity {
 
                     Date date = new Date();
                     if (counter == 0 && measureFlag)
-                        firstTime(x, y, date);
+                        restOfMeasurement(x, y, date.getTime() - firstTime);
                     else if (measureFlag)
                         restOfMeasurement(x, y, date.getTime() - firstTime);
 
@@ -225,9 +234,7 @@ public class FingerTappingActivity extends AppCompatActivity {
             }
         }
 
-        private void restOfMeasurement(float x, float y, long l) {
-            long time;
-            time = l;
+        private void restOfMeasurement(float x, float y, long time) {
             times.add(time);
             if (x > (width / 2)) { //prawa strona
                 float distance = calculateDist(centreXR, centreYR, x, y);
@@ -246,33 +253,37 @@ public class FingerTappingActivity extends AppCompatActivity {
             }
         }
 
-        private void firstTime(float x, float y, Date date) {
-            firstTime = date.getTime();
-            restOfMeasurement(x, y, 0L);
-        }
-
     };
+
+    private void hideAim(ImageView leftAim, int invisible, ImageView rightAim) {
+        leftAim.setVisibility(invisible);
+        rightAim.setVisibility(invisible);
+        left.setVisibility(invisible);
+        right.setVisibility(invisible);
+    }
 
 
     private void endOfMeasure() {
         measureFlag = false;
-        rightAim.setVisibility(View.GONE);
-        leftAim.setVisibility(View.GONE);
-        left.setVisibility(View.GONE);
-        right.setVisibility(View.GONE);
-        info.setText(getString(R.string.endOfMeasure));
+        hideAim(rightAim, View.GONE, leftAim);
         @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd;HH:mm:ss");
         Date date = new Date();
-        String fileName = "measurement"+category+"-" + dateFormat.format(date);
+        String fileName = "measurement" + category + "-" + dateFormat.format(date);
         data.append(userData.toString());
         new FileSave(this, fileName, data.toString()).saveData(true);
 
+        Map<String, Integer> settings=new HashMap<>();
+        settings.put("time", time);
+        settings.put("interval", interval);
+        settings.put("category", category);
         measuredData.put("time", times);
         measuredData.put("sideValue", sideValue);
         measuredData.put("distL", distanceLeft);
         measuredData.put("distR", distanceRight);
         measuredData.put("user data", convertArrayToMap(userData));
         measuredData.put("shownAim", whichIsShown);
+        measuredData.put("aimTime", aimTime);
+        measuredData.put("settings", settings);
 
         db.collection("measurements").document(fileName).set(measuredData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -295,8 +306,9 @@ public class FingerTappingActivity extends AppCompatActivity {
         distanceRight = new ArrayList<>();
         data = new StringBuilder();
         whichIsShown = new ArrayList<>();
+        aimTime = new ArrayList<>();
 
-        System.out.println(measures.length);
+
         Intent i = new Intent(this, WaitForMeasure.class);
         i.putExtra("order", measures);
         i.putExtra("UserData", userData);
@@ -359,10 +371,7 @@ public class FingerTappingActivity extends AppCompatActivity {
     }
 
     private void randomTapping() {
-        rightAim.setVisibility(View.INVISIBLE);
-        leftAim.setVisibility(View.INVISIBLE);
-        left.setVisibility(View.INVISIBLE);
-        right.setVisibility(View.INVISIBLE);
+        hideAim(rightAim, View.INVISIBLE, leftAim);
         Random r = new Random();
         int i1 = r.nextInt(2);
         if (i1 == 1) { //lewa
@@ -381,10 +390,7 @@ public class FingerTappingActivity extends AppCompatActivity {
 
     private void synchTapping() {
         flag = !flag;
-        rightAim.setVisibility(View.INVISIBLE);
-        leftAim.setVisibility(View.INVISIBLE);
-        left.setVisibility(View.INVISIBLE);
-        right.setVisibility(View.INVISIBLE);
+        hideAim(rightAim, View.INVISIBLE, leftAim);
         if (flag) { //lewa
             left.setBackgroundColor(Color.GREEN);
             left.setVisibility(View.VISIBLE);
@@ -400,5 +406,7 @@ public class FingerTappingActivity extends AppCompatActivity {
 
     private void classicTapping() {
         whichIsShown.add(-1);
+        leftAim.setVisibility(View.VISIBLE);
+        rightAim.setVisibility(View.VISIBLE);
     }
 }

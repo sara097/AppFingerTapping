@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".InstructionActivity"></activity>
+        <activity android:name=".SettingsActivity" />
         <activity android:name=".WaitForMeasure" />
         <activity android:name=".UserDataActivity" />
         <activity android:name=".MainActivity">

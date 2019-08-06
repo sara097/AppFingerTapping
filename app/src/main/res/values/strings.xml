@@ -15,4 +15,6 @@
     <string name="imie">Imię</string>
     <string name="podaj_swoje_dane">Podaj swoje dane</string>
     <string name="identyfikator">Identyfikator</string>
+    <string name="settings">Ustawienia</string>
+    <string name="start_measure">Rozpocznij badanie</string>
 </resources>

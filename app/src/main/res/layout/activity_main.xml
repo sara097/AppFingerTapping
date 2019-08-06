@@ -28,7 +28,7 @@
         android:layout_marginTop="188dp"
         android:layout_marginEnd="8dp"
         android:onClick="tapTwoClicked"
-        android:text="Rozpocznij badanie"
+        android:text="@string/start_measure"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
@@ -41,46 +41,12 @@
         android:layout_height="61dp"
         android:layout_marginBottom="76dp"
         android:onClick="settingsClicked"
-        android:text="Ustawienia"
+        android:text="@string/settings"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/classic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="116dp"
-        android:layout_marginEnd="8dp"
-        android:onClick="classicClicked"
-        android:text="Klasyczny"
-        app:layout_constraintEnd_toStartOf="@+id/synch"
-        app:layout_constraintHorizontal_bias="0.557"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tapBtn2" />
 
-    <Button
-        android:id="@+id/synch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="116dp"
-        android:layout_marginEnd="48dp"
-        android:onClick="synchClicked"
-        android:text="Synch"
-        app:layout_constraintEnd_toStartOf="@+id/random"
-        app:layout_constraintTop_toBottomOf="@+id/tapBtn2" />
-
-    <Button
-        android:id="@+id/random"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="116dp"
-        android:layout_marginEnd="16dp"
-        android:onClick="randomClicked"
-        android:text="Random"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tapBtn2" />
 
 
 </android.support.constraint.ConstraintLayout>
