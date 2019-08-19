@@ -13,18 +13,18 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
-public class FileSave {
+class FileOperations {
     private Context context;
     private String name;
     private String text;
 
-    public FileSave(Context con, String name, String text) {
+    FileOperations(Context con, String name, String text) {
         this.context=con;
         this.text=text;
         this.name=name+".txt";
     }
 
-    public FileSave(Context context) {
+    FileOperations(Context context) {
         this.context = context;
     }
 
@@ -55,16 +55,16 @@ public class FileSave {
 
     }
 
-    public ArrayList<Integer> readSettings() {
+    ArrayList<Integer> readSettings() {
 
-        ArrayList<Integer> output=new ArrayList<>();
+        ArrayList<Integer> output= null;
         try {
+            output=new ArrayList<>();
             File path = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_DOCUMENTS);
             File myFile = new File(path, "settings.txt");
             InputStream inputStream = new FileInputStream(myFile);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    inputStream));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
             while ((line = reader.readLine()) != null) {
                 for (String s : line.split(";")) {

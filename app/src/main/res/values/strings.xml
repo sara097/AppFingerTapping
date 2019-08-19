@@ -17,4 +17,7 @@
     <string name="identyfikator">Identyfikator</string>
     <string name="settings">Ustawienia</string>
     <string name="start_measure">Rozpocznij badanie</string>
+    <string name="instruction">Instrukcja</string>
+    <string name="hand">Ręka prawa</string>
+    <string name="MainInstruction">Klikaj w wyświetlony cel. Pomiar rozpocznie się po dwukrotnym kliknięciu.</string>
 </resources>

@@ -14,15 +14,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="163dp"
-        android:layout_marginTop="36dp"
         android:layout_marginEnd="163dp"
-        android:text="Klikaj w wyświetlony cel. Pomiar rozpocznie się po dwukrotnym kliknięciu."
+        android:text="@string/MainInstruction"
         android:textAlignment="center"
         android:textColor="@android:color/background_dark"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/handTxt" />
 
     <View
         android:id="@+id/divider"
@@ -57,17 +56,19 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:onClick="instructionClicked"
-        android:text="Instruction"
+        android:text="@string/instruction"
         app:layout_constraintBottom_toTopOf="@+id/start"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/twoTapInstruction" />
+        app:layout_constraintTop_toBottomOf="@+id/twoTapInstruction"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/start"
         android:layout_width="163dp"
         android:layout_height="101dp"
-        android:layout_marginTop="228dp"
+        android:layout_marginTop="248dp"
         android:onClick="startClicked"
         android:text="@string/startBtn"
         app:layout_constraintEnd_toEndOf="parent"
@@ -117,5 +118,18 @@
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/aim" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/handTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/hand"
+        android:textColor="#FC020000"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

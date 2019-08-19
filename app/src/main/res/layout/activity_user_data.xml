@@ -139,22 +139,6 @@
         android:entries="@array/hand" />
 
     <TextView
-        android:id="@+id/text2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Test przeprowadzany będzie:"
-        android:textColor="#000000"
-        android:textSize="18sp" />
-
-    <Spinner
-        android:id="@+id/measuredHand"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:entries="@array/hand" />
-
-    <TextView
         android:id="@+id/additionalInfoLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
