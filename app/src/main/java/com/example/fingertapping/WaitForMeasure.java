@@ -1,18 +1,19 @@
 package com.example.fingertapping;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class WaitForMeasure extends AppCompatActivity implements Initializable{
+public class WaitForMeasure extends AppCompatActivity implements Initializable {
 
     TextView left;
-    int [] order;
+    int[] order;
     private ArrayList<CharSequence> userData = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,8 +24,8 @@ public class WaitForMeasure extends AppCompatActivity implements Initializable{
         order = intent.getExtras().getIntArray("order");
         userData = intent.getCharSequenceArrayListExtra("UserData");
 
-        left.setText("Zostało badań: "+order.length);
-        if(order.length==0 || order.length>6){
+        left.setText("Zostało badań: " + order.length);
+        if (order.length == 0 || order.length > 6) {
             Intent i = new Intent(getBaseContext(), MainActivity.class);
             startActivity(i);
         }
@@ -39,6 +40,6 @@ public class WaitForMeasure extends AppCompatActivity implements Initializable{
 
     @Override
     public void initializeActivityElements() {
-        left=(TextView) findViewById(R.id.measuresLeft);
+        left = (TextView) findViewById(R.id.measuresLeft);
     }
 }

@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 
-public class SettingsActivity extends AppCompatActivity implements Initializable{
+public class SettingsActivity extends AppCompatActivity implements Initializable {
 
     EditText time;
     EditText interval;
@@ -18,14 +18,14 @@ public class SettingsActivity extends AppCompatActivity implements Initializable
         setContentView(R.layout.activity_settings);
         initializeActivityElements();
         FileOperations fs = new FileOperations(this);
-        if (fs.readSettings() != null && fs.readSettings().size()>0) {
+        if (fs.readSettings() != null && fs.readSettings().size() > 0) {
             time.setText(fs.readSettings().get(0).toString());
             interval.setText(fs.readSettings().get(1).toString());
         }
     }
 
     @Override
-   public void initializeActivityElements() {
+    public void initializeActivityElements() {
         time = (EditText) findViewById(R.id.time);
         interval = (EditText) findViewById(R.id.interval);
     }

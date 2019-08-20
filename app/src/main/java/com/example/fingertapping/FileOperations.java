@@ -19,9 +19,9 @@ class FileOperations {
     private String text;
 
     FileOperations(Context con, String name, String text) {
-        this.context=con;
-        this.text=text;
-        this.name=name+".txt";
+        this.context = con;
+        this.text = text;
+        this.name = name + ".txt";
     }
 
     FileOperations(Context context) {
@@ -35,7 +35,7 @@ class FileOperations {
             File path = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_DOCUMENTS);
             File myFile = new File(path, name);
-            FileOutputStream fOut = new FileOutputStream(myFile,append);
+            FileOutputStream fOut = new FileOutputStream(myFile, append);
             OutputStreamWriter out = new OutputStreamWriter(fOut);
             //zapisanie do pliku
             out.write(text);
@@ -57,9 +57,9 @@ class FileOperations {
 
     ArrayList<Integer> readSettings() {
 
-        ArrayList<Integer> output= null;
+        ArrayList<Integer> output = null;
         try {
-            output=new ArrayList<>();
+            output = new ArrayList<>();
             File path = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_DOCUMENTS);
             File myFile = new File(path, "settings.txt");

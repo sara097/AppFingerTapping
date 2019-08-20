@@ -20,4 +20,9 @@
     <string name="instruction">Instrukcja</string>
     <string name="hand">Ręka prawa</string>
     <string name="MainInstruction">Klikaj w wyświetlony cel. Pomiar rozpocznie się po dwukrotnym kliknięciu.</string>
+    <string name="leftHandInfo">Ręka lewa</string>
+    <string name="rightHandInfo">Ręka prawa</string>
+    <string name="classicInstruction">Badanie finger tapping. Klikaj w ekran naprzemiennie dwoma palcami (wskazującym i środkowym). Pomiar rozpocznie się po kliknięciu przycisku</string>
+    <string name="synchInstruction">Badanie synchroniczny finger tapping. Klikaj w ekran naprzemiennie dwoma palcami (wskazującym i środkowym) w wyświetlane cele. Pomiar rozpocznie się po kliknięciu przycisku</string>
+    <string name="randInstruction">Badanie synchroniczny finger tapping z losowym celem. Klikaj w ekran naprzemiennie dwoma palcami (wskazującym i środkowym) w wyświetlane cele. Pomiar rozpocznie się po kliknięciu przycisku</string>
 </resources>
