@@ -283,6 +283,7 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
         Intent i = new Intent(this, WaitForMeasure.class);
         i.putExtra("order", measures);
         i.putExtra("UserData", userData);
+        finish();
         startActivity(i);
     }
 
@@ -340,6 +341,7 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
         map.put("dominantHand", user.get(4).toString());
         map.put("description", user.get(5).toString());
         if (order.size() <= 3) map.put("hand", "left");
+        else map.put("hand", "right");
         return map;
     }
 

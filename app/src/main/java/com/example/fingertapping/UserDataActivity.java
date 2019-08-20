@@ -89,6 +89,7 @@ public class UserDataActivity extends AppCompatActivity implements Initializable
         i.putExtra("UserData", data);
         i.putExtra("order", order);
         i.putExtra("category", category);
+        finish();
         startActivity(i);
     }
 }

@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this,
                     arrayOf(permission),
                     1)
-
         }
     }
 

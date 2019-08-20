@@ -27,6 +27,7 @@ public class WaitForMeasure extends AppCompatActivity implements Initializable {
         left.setText("Zostało badań: " + order.length);
         if (order.length == 0 || order.length > 6) {
             Intent i = new Intent(getBaseContext(), MainActivity.class);
+            finish();
             startActivity(i);
         }
     }
@@ -35,6 +36,7 @@ public class WaitForMeasure extends AppCompatActivity implements Initializable {
         Intent i = new Intent(getBaseContext(), FingerTappingActivity.class);
         i.putExtra("order", order);
         i.putExtra("UserData", userData);
+        finish();
         startActivity(i);
     }
 
