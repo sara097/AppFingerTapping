@@ -1,5 +1,8 @@
 package com.example.fingertapping;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -44,6 +48,7 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
     private LinearLayout left;
     private LinearLayout right;
     private TextView hand;
+    private ProgressBar progressBar;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -92,7 +97,7 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
         order = readOrderOfMeasurements(intent);
         getCategory(order);
 
-        if (order.size() <= 3) hand.setText(getString(R.string.leftHandInfo));
+        if (order.size() < 3) hand.setText(getString(R.string.leftHandInfo));
         else hand.setText(getString(R.string.rightHandInfo));
 
         ConstraintLayout layout = findViewById(R.id.layout);
@@ -100,7 +105,7 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
 
         calculateAimCentre();
         createTimeHandler();
-
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     private void createTimeHandler() {
@@ -153,6 +158,7 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
         rightAim = (ImageView) findViewById(R.id.rightAim);
         twoTapInstruction = (TextView) findViewById(R.id.twoTapInstruction);
         hand = (TextView) findViewById(R.id.handTxt);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
     }
 
     private void getCategory(ArrayList<Integer> order) {
@@ -160,17 +166,17 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
             category = order.get(0);
             order.remove(0);
             measures = new int[order.size()];
-            for (int i = 0; i < order.size(); i++) {
+            for (int i = 0; i < order.size(); i++)
                 measures[i] = order.get(i);
-            }
+
         }
     }
 
     private ArrayList<Integer> readOrderOfMeasurements(Intent intent) {
         ArrayList<Integer> order = new ArrayList<>();
-        for (int i : intent.getExtras().getIntArray("order")) {
+        for (int i : intent.getExtras().getIntArray("order"))
             order.add(i);
-        }
+
         return order;
     }
 
@@ -190,11 +196,29 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
 
     public void startClicked(View view) {
         measureFlag = true;
+        progressBar.setVisibility(View.VISIBLE);
         firstTime = new Date().getTime();
         if (category != 0)
             hideAim(leftAim, View.INVISIBLE, rightAim);
         start.setVisibility(View.GONE);
         instruct.setVisibility(View.GONE);
+        ValueAnimator animator = prepareProgressBarAnimator();
+        animator.start();
+    }
+
+    @NotNull
+    private ValueAnimator prepareProgressBarAnimator() {
+        progressBar.setScaleY(3f);
+        ValueAnimator animator = ValueAnimator.ofInt(0, progressBar.getMax());
+        animator.setDuration(time * 1000);
+        animator.addUpdateListener(animation -> progressBar.setProgress((Integer) animation.getAnimatedValue()));
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                progressBar.setProgress(0);
+            }
+        });
+        return animator;
     }
 
     private float calculateDist(float centreX, float centreY, float x, float y) {
@@ -274,8 +298,9 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
 
     private void endOfMeasure() {
         measureFlag = false;
+        progressBar.setVisibility(View.INVISIBLE);
         hideAim(rightAim, View.GONE, leftAim);
-        String fileName = fenerateFileName();
+        String fileName = generateFileName();
         saveDataToFile(fileName);
         collectData();
         saveToDatabase(fileName);
@@ -304,7 +329,7 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
     }
 
     @NotNull
-    private String fenerateFileName() {
+    private String generateFileName() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd;HH:mm:ss");
         Date date = new Date();
         return "measurement" + category + "-" + dateFormat.format(date);
@@ -340,7 +365,7 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
         map.put("parkinson", user.get(3).toString());
         map.put("dominantHand", user.get(4).toString());
         map.put("description", user.get(5).toString());
-        if (order.size() <= 3) map.put("hand", "left");
+        if (order.size() < 3) map.put("hand", "left");
         else map.put("hand", "right");
         return map;
     }
@@ -387,7 +412,6 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
             whichIsShown.add(1);
         }
     }
-
 
     private void synchTapping() {
         flag = !flag;

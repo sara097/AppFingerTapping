@@ -1,5 +1,6 @@
 package com.example.fingertapping;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,10 +11,11 @@ import java.util.ArrayList;
 
 public class WaitForMeasure extends AppCompatActivity implements Initializable {
 
-    TextView left;
-    int[] order;
+    private TextView left;
+    private int[] order;
     private ArrayList<CharSequence> userData = new ArrayList<>();
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +26,7 @@ public class WaitForMeasure extends AppCompatActivity implements Initializable {
         order = intent.getExtras().getIntArray("order");
         userData = intent.getCharSequenceArrayListExtra("UserData");
 
-        left.setText("Zostało badań: " + order.length);
+        left.setText(getString(R.string.measurementLeft) + order.length);
         if (order.length == 0 || order.length > 6) {
             Intent i = new Intent(getBaseContext(), MainActivity.class);
             finish();

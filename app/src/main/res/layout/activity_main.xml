@@ -6,19 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/headerTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="131dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="130dp"
-        android:textColor="@android:color/background_dark"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
 
     <Button
         android:id="@+id/tapBtn2"
@@ -37,11 +24,12 @@
 
     <Button
         android:id="@+id/settings"
-        android:layout_width="123dp"
-        android:layout_height="61dp"
-        android:layout_marginBottom="76dp"
+        android:layout_width="175dp"
+        android:layout_height="63dp"
+        android:layout_marginBottom="164dp"
         android:onClick="settingsClicked"
         android:text="@string/settings"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

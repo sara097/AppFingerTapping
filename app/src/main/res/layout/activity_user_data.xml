@@ -163,7 +163,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:onClick="startFingerTapping"
-        android:text="Przejdź dalej" />
+        android:text="Przejdź dalej"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/alertLabel"

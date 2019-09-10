@@ -8,8 +8,8 @@ import android.widget.EditText;
 
 public class SettingsActivity extends AppCompatActivity implements Initializable {
 
-    EditText time;
-    EditText interval;
+    private EditText time;
+    private EditText interval;
 
     @SuppressLint("SetTextI18n")
     @Override

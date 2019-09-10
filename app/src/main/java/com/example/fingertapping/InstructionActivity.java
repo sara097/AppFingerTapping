@@ -10,9 +10,8 @@ import android.widget.VideoView;
 
 public class InstructionActivity extends AppCompatActivity implements Initializable {
 
-    VideoView vid;
-    TextView instruction;
-
+    private VideoView vid;
+    private TextView instruction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,25 +27,13 @@ public class InstructionActivity extends AppCompatActivity implements Initializa
         String instruct;
         if (category == 0) {
             path = "android.resource://" + getPackageName() + "/" + R.raw.classic;
-            instruct = "Usiądź i oprzyj rękę stabilnie na blacie. \n" +
-                    "Klikaj w ekran naprzemiennie dwoma palcami i staraj się trafić w cel.\n" +
-                    "W zależności od dłoni, którą wykonywane jest zadanie, dla lewej palec środkowy powinień trafiać w lewy cel \n" +
-                    "a wskazujący w prawy, dla dłoni prawej analogicznie.";
+            instruct = getString(R.string.instructionClassic);
         } else if (category == 1) {
             path = "android.resource://" + getPackageName() + "/" + R.raw.synch;
-            instruct = "Usiądź i oprzyj rękę stabilnie na blacie. \n" +
-                    "Klikaj w ekran naprzemiennie dwoma palcami \n" +
-                    "starając się trafić w wyświetlany w równych odstępach czasu cel.\n" +
-                    "W zależności od dłoni, którą wykonywane jest zadanie, dla lewej palec środkowy powinień trafiać w lewy cel \n" +
-                    "a wskazujący w prawy, dla dłoni prawej analogicznie.";
+            instruct = getString(R.string.instructionSynch);
         } else {
             path = "android.resource://" + getPackageName() + "/" + R.raw.rand;
-            instruct = "Usiądź i oprzyj rękę stabilnie na blacie. \n" +
-                    "Klikając w ekran" +
-                    "staraj się trafić w wyświetlany w równych odstępach czasu cel.\n" +
-                    "Cel wyświetlany jest po losowej stronie ekranu.\n" +
-                    "W zależności od dłoni, którą wykonywane jest zadanie, dla lewej palec środkowy powinień trafiać w lewy cel \n" +
-                    "a wskazujący w prawy, dla dłoni prawej analogicznie.";
+            instruct = getString(R.string.instructionRand);
         }
         instruction.setText(instruct);
         Uri u = Uri.parse(path);

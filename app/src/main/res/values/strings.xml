@@ -22,7 +22,11 @@
     <string name="MainInstruction">Klikaj w wyświetlony cel. Pomiar rozpocznie się po dwukrotnym kliknięciu.</string>
     <string name="leftHandInfo">Ręka lewa</string>
     <string name="rightHandInfo">Ręka prawa</string>
-    <string name="classicInstruction">Badanie finger tapping. Klikaj w ekran naprzemiennie dwoma palcami (wskazującym i środkowym). Pomiar rozpocznie się po kliknięciu przycisku</string>
-    <string name="synchInstruction">Badanie synchroniczny finger tapping. Klikaj w ekran naprzemiennie dwoma palcami (wskazującym i środkowym) w wyświetlane cele. Pomiar rozpocznie się po kliknięciu przycisku</string>
-    <string name="randInstruction">Badanie synchroniczny finger tapping z losowym celem. Klikaj w ekran naprzemiennie dwoma palcami (wskazującym i środkowym) w wyświetlane cele. Pomiar rozpocznie się po kliknięciu przycisku</string>
+    <string name="classicInstruction">Badanie: finger tapping. Klikaj w ekran naprzemiennie dwoma palcami (wskazującym i środkowym). Pomiar rozpocznie się po kliknięciu przycisku</string>
+    <string name="synchInstruction">Badanie: synchroniczny finger tapping. Klikaj w ekran naprzemiennie dwoma palcami (wskazującym i środkowym) w wyświetlane cele. Pomiar rozpocznie się po kliknięciu przycisku</string>
+    <string name="randInstruction">Badanie: synchroniczny finger tapping z losowym celem. Klikaj w ekran naprzemiennie dwoma palcami (wskazującym i środkowym) w wyświetlane cele. Pomiar rozpocznie się po kliknięciu przycisku</string>
+    <string name="measurementLeft">Zostało badań:</string>
+    <string name="instructionClassic">Usiądź i oprzyj rękę stabilnie na blacie.   Klikaj w ekran naprzemiennie dwoma palcami i staraj się trafić w cel.  W zależności od dłoni, którą wykonywane jest zadanie, dla lewej palec środkowy powinień trafiać w lewy cel   a wskazujący w prawy, dla dłoni prawej analogicznie.</string>
+    <string name="instructionSynch">Usiądź i oprzyj rękę stabilnie na blacie.   Klikaj w ekran naprzemiennie dwoma palcami   starając się trafić w wyświetlany w równych odstępach czasu cel.  W zależności od dłoni, którą wykonywane jest zadanie, dla lewej palec środkowy powinień trafiać w lewy cel   a wskazujący w prawy, dla dłoni prawej analogicznie.</string>
+    <string name="instructionRand">Usiądź i oprzyj rękę stabilnie na blacie.   Klikając w ekran staraj się trafić w wyświetlany w równych odstępach czasu cel.  Cel wyświetlany jest po losowej stronie ekranu.  W zależności od dłoni, którą wykonywane jest zadanie, dla lewej palec środkowy powinień trafiać w lewy cel   a wskazujący w prawy, dla dłoni prawej analogicznie.</string>
 </resources>
