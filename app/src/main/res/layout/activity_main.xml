@@ -17,6 +17,7 @@
         android:onClick="tapTwoClicked"
         android:text="@string/start_measure"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
