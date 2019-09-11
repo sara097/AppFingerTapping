@@ -28,12 +28,37 @@ class FileOperations {
         this.context = context;
     }
 
+    void saveSettingsData(boolean append) {
+
+        try {
+            //utworzenie pliku do zapisu
+            File path = Environment.getExternalStorageDirectory();
+            File myFile = new File(path, name);
+            FileOutputStream fOut = new FileOutputStream(myFile, append);
+            OutputStreamWriter out = new OutputStreamWriter(fOut);
+            //zapisanie do pliku
+            out.write(text);
+            out.flush();
+            out.close();
+
+            //wyswietlenie komunikatu, że zapisano dane
+            Toast.makeText(context, "Data Saved", Toast.LENGTH_LONG).show();
+
+        } catch (java.io.IOException e) {
+            //obsluga wyjatku
+            //w razie niepowodzenia zapisu do pliku zostaje wyswietlony komunikat a w konsoli zrzut stosu
+            Toast.makeText(context, "Data Could not be added", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+
+        }
+
+    }
+
     void saveData(boolean append) {
 
         try {
             //utworzenie pliku do zapisu
-            File path = Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_DOCUMENTS);
+            File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
             File myFile = new File(path, name);
             FileOutputStream fOut = new FileOutputStream(myFile, append);
             OutputStreamWriter out = new OutputStreamWriter(fOut);
@@ -60,8 +85,9 @@ class FileOperations {
         ArrayList<Integer> output = null;
         try {
             output = new ArrayList<>();
-            File path = Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_DOCUMENTS);
+            File path = Environment.getExternalStorageDirectory();
+//                    Environment.getExternalStoragePublicDirectory(
+//                    Environment.DIRECTORY_DOCUMENTS);
             File myFile = new File(path, "settings.txt");
             InputStream inputStream = new FileInputStream(myFile);
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));

@@ -188,7 +188,7 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
         } catch (Exception e) {
             String settings = time + ";" + interval;
             FileOperations fss = new FileOperations(this, "settings", settings);
-            fss.saveData(false);
+            fss.saveSettingsData(false);
         }
     }
 

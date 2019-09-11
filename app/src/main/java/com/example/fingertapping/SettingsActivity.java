@@ -33,7 +33,7 @@ public class SettingsActivity extends AppCompatActivity implements Initializable
     public void saveClicked(View view) {
         String settings = time.getText().toString() + ";" + interval.getText().toString();
         FileOperations fs = new FileOperations(this, "settings", settings);
-        fs.saveData(false);
+        fs.saveSettingsData(false);
 
     }
 }
