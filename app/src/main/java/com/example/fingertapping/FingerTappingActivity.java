@@ -74,8 +74,8 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
 
     private boolean flag = true;
     private boolean measureFlag = false;
-    private int time;
-    private int interval;
+    private int time = 20;
+    private int interval = 750;
 
     private int[] measures;
     private int category = 0;
@@ -182,8 +182,14 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
 
     private void readSettings() {
         FileOperations fs = new FileOperations(this);
-        time = fs.readSettings().get(0);
-        interval = fs.readSettings().get(1);
+        try {
+            time = fs.readSettings().get(0);
+            interval = fs.readSettings().get(1);
+        } catch (Exception e) {
+            String settings = time + ";" + interval;
+            FileOperations fss = new FileOperations(this, "settings", settings);
+            fss.saveData(false);
+        }
     }
 
     public void instructionClicked(View view) {
