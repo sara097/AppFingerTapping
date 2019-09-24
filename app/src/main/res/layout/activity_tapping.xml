@@ -78,49 +78,58 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <LinearLayout
         android:id="@+id/left"
         android:layout_width="200dp"
         android:layout_height="350dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginBottom="4dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:id="@+id/leftAim"
-            android:layout_width="122dp"
-            android:layout_height="115dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="96dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/aim" />
-    </LinearLayout>
+        app:layout_constraintEnd_toStartOf="@+id/right"
+        app:layout_constraintStart_toStartOf="@+id/tapSpace2"></LinearLayout>
 
     <LinearLayout
         android:id="@+id/right"
-        android:layout_width="200dp"
-        android:layout_height="350dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="4dp"
-        android:orientation="horizontal"
+        android:layout_width="206dp"
+        android:layout_height="351dp"
+        android:layout_marginStart="8dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/divider">
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tapSpace2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider2">
+
+        <ImageView
+            android:id="@+id/leftAim"
+            android:layout_width="17mm"
+            android:layout_height="17mm"
+            android:layout_marginRight="4mm"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/aim" />
 
         <ImageView
             android:id="@+id/rightAim"
-            android:layout_width="122dp"
-            android:layout_height="115dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="96dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_width="17mm"
+            android:layout_height="17mm"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/aim" />
     </LinearLayout>
+
 
     <TextView
         android:id="@+id/handTxt"

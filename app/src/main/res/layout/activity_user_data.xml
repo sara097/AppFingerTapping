@@ -127,7 +127,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Dominująca ręka"
+        android:text="@string/dominantHand"
         android:textColor="#000000"
         android:textSize="18sp" />
 
@@ -140,6 +140,38 @@
 
     <TextView
         android:id="@+id/additionalInfoLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/tremor"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+    <Spinner
+        android:id="@+id/tremor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:entries="@array/tremor" />
+
+    <TextView
+        android:id="@+id/labelG"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/group"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+    <Spinner
+        android:id="@+id/group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:entries="@array/group" />
+
+    <TextView
+        android:id="@+id/additionalInfoLabel2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -163,7 +195,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:onClick="startFingerTapping"
-        android:text="Przejdź dalej"
+        android:text="@string/Process"
         android:textSize="24sp"
         android:textStyle="bold" />
 

@@ -119,7 +119,7 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
                             if (secondsPass % 2 == 0) {
                                 aimDisplay();
                             } else {
-                                hideAim(rightAim, View.INVISIBLE, leftAim);
+                                changeAllVisibility(View.INVISIBLE);
                             }
                         else aimDisplay();
                         secondsPass++;
@@ -205,7 +205,7 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
         progressBar.setVisibility(View.VISIBLE);
         firstTime = new Date().getTime();
         if (category != 0)
-            hideAim(leftAim, View.INVISIBLE, rightAim);
+            changeAllVisibility(View.INVISIBLE);
         start.setVisibility(View.GONE);
         instruct.setVisibility(View.GONE);
         ValueAnimator animator = prepareProgressBarAnimator();
@@ -237,8 +237,7 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
         @Override
         public boolean onTouch(View v, MotionEvent event) {
 
-            if (category != 0)
-                hideAim(leftAim, View.INVISIBLE, rightAim);
+            //  if (category != 0)
 
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -294,18 +293,18 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
 
     };
 
-    private void hideAim(ImageView leftAim, int invisible, ImageView rightAim) {
-        leftAim.setVisibility(invisible);
-        rightAim.setVisibility(invisible);
-        left.setVisibility(invisible);
-        right.setVisibility(invisible);
+    private void changeAllVisibility(int visibility) {
+        leftAim.setVisibility(visibility);
+        rightAim.setVisibility(visibility);
+        left.setVisibility(visibility);
+        right.setVisibility(visibility);
     }
 
 
     private void endOfMeasure() {
         measureFlag = false;
         progressBar.setVisibility(View.INVISIBLE);
-        hideAim(rightAim, View.GONE, leftAim);
+        changeAllVisibility(View.GONE);
         String fileName = generateFileName();
         saveDataToFile(fileName);
         collectData();
@@ -371,6 +370,12 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
         map.put("parkinson", user.get(3).toString());
         map.put("dominantHand", user.get(4).toString());
         map.put("description", user.get(5).toString());
+        map.put("tremor", user.get(6).toString());
+        map.put("group", user.get(7).toString());
+        map.put("id", user.get(8).toString());
+        map.put("patientName", user.get(9).toString());
+        map.put("patientLastName", user.get(10).toString());
+
         if (order.size() < 3) map.put("hand", "left");
         else map.put("hand", "right");
         return map;
@@ -405,7 +410,7 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
     }
 
     private void randomTapping() {
-        hideAim(rightAim, View.INVISIBLE, leftAim);
+        changeAllVisibility(View.INVISIBLE);
         Random r = new Random();
         int i1 = r.nextInt(2);
         if (i1 == 1) { //lewa
@@ -421,7 +426,7 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
 
     private void synchTapping() {
         flag = !flag;
-        hideAim(rightAim, View.INVISIBLE, leftAim);
+        changeAllVisibility(View.INVISIBLE);
         if (flag) { //lewa
             greenAndVisible(left);
             leftAim.setVisibility(View.VISIBLE);
@@ -433,9 +438,9 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
         }
     }
 
-    private void greenAndVisible(LinearLayout right) {
-        right.setBackgroundColor(Color.GREEN);
-        right.setVisibility(View.VISIBLE);
+    private void greenAndVisible(LinearLayout side) {
+        side.setBackgroundColor(Color.GREEN);
+        side.setVisibility(View.VISIBLE);
     }
 
     private void classicTapping() {

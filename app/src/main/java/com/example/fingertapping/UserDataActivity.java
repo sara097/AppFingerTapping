@@ -22,6 +22,8 @@ public class UserDataActivity extends AppCompatActivity implements Initializable
     private Spinner gender;
     private Spinner parkinsonL;
     private Spinner dominantHand;
+    private Spinner tremor;
+    private Spinner group;
     private int[] order = new int[]{0, 1, 2, 0, 1, 2};
     private int category;
 
@@ -46,6 +48,8 @@ public class UserDataActivity extends AppCompatActivity implements Initializable
         gender = (Spinner) findViewById(R.id.gender);
         parkinsonL = (Spinner) findViewById(R.id.parkinsonL);
         dominantHand = (Spinner) findViewById(R.id.dominantHand);
+        tremor = (Spinner) findViewById(R.id.tremor);
+        group = (Spinner) findViewById(R.id.group);
     }
 
     @SuppressLint("SetTextI18n")
@@ -75,6 +79,11 @@ public class UserDataActivity extends AppCompatActivity implements Initializable
         data.add(parkinsonL.getSelectedItem().toString());
         data.add(dominantHand.getSelectedItem().toString());
         data.add(additionalInfo.getText().toString());
+        data.add(tremor.getSelectedItem().toString());
+        data.add(group.getSelectedItem().toString());
+        data.add(id.getText().toString());
+        data.add(name.getText().toString());
+        data.add(lastName.getText().toString());
         return data;
     }
 

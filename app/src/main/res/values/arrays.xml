@@ -3,4 +3,14 @@
     <string-array name="gender"><item>Kobieta</item><item>Mezczyzna</item></string-array>
     <string-array name="yesNo"><item>Nie</item><item>Tak</item></string-array>
     <string-array name="hand"><item> Prawa </item> <item> Lewa</item>></string-array>
+    <string-array name="tremor">
+        <item> Prawa </item>
+        <item> Lewa</item>
+        <item> Obie dłonie</item>
+        <item> Brak</item>
+    </string-array>
+    <string-array name="group">
+        <item> Badawcza </item>
+        <item> Kontrolna</item>>
+    </string-array>
 </resources>

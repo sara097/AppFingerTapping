@@ -29,4 +29,8 @@
     <string name="instructionClassic">Usiądź i oprzyj rękę stabilnie na blacie.   Klikaj w ekran naprzemiennie dwoma palcami i staraj się trafić w cel.  W zależności od dłoni, którą wykonywane jest zadanie, dla lewej palec środkowy powinień trafiać w lewy cel   a wskazujący w prawy, dla dłoni prawej analogicznie.</string>
     <string name="instructionSynch">Usiądź i oprzyj rękę stabilnie na blacie.   Klikaj w ekran naprzemiennie dwoma palcami   starając się trafić w wyświetlany w równych odstępach czasu cel.  W zależności od dłoni, którą wykonywane jest zadanie, dla lewej palec środkowy powinień trafiać w lewy cel   a wskazujący w prawy, dla dłoni prawej analogicznie.</string>
     <string name="instructionRand">Usiądź i oprzyj rękę stabilnie na blacie.   Klikając w ekran staraj się trafić w wyświetlany w równych odstępach czasu cel.  Cel wyświetlany jest po losowej stronie ekranu.  W zależności od dłoni, którą wykonywane jest zadanie, dla lewej palec środkowy powinień trafiać w lewy cel   a wskazujący w prawy, dla dłoni prawej analogicznie.</string>
+    <string name="dominantHand">Dominująca ręka</string>
+    <string name="tremor">Drżenia</string>
+    <string name="group">Grupa</string>
+    <string name="Process">Przejdź dalej</string>
 </resources>
