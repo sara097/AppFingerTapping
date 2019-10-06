@@ -159,7 +159,7 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
                 leftAim.getViewTreeObserver().removeGlobalOnLayoutListener(this);
 
                 int[] locations = new int[2];
-                rightAim.getLocationOnScreen(locations);
+                leftAim.getLocationOnScreen(locations);
                 centreXL = locations[0];
                 centreYL = locations[1];
             }
