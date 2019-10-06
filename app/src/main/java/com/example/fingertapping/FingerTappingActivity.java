@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -60,14 +61,15 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
     private float centreYL;
 
     private Map<String, Object> measuredData = new HashMap<>();
-    private StringBuilder data = new StringBuilder(); //string builder przechowujacy dane, ktore mozna nastepnie zapisac do pliku
     private ArrayList<Long> times = new ArrayList<>();
-    private ArrayList<Integer> sideValue = new ArrayList<>(); // 0 - uniesienie paca, 10 - prawa strona, -10 - lewa strona
-    private ArrayList<Float> distanceRight = new ArrayList<>();
-    private ArrayList<Float> distanceLeft = new ArrayList<>();
+    private ArrayList<String> sideValue = new ArrayList<>(); // 0 - uniesienie paca, 10 - prawa strona, -10 - lewa strona
+    private ArrayList<Float> XR = new ArrayList<>();
+    private ArrayList<Float> XL = new ArrayList<>();
+    private ArrayList<Float> YR = new ArrayList<>();
+    private ArrayList<Float> YL = new ArrayList<>();
     private ArrayList<Long> aimTime = new ArrayList<>();
     private ArrayList<CharSequence> userData = new ArrayList<>();
-    private ArrayList<Integer> whichIsShown = new ArrayList<>();
+    private ArrayList<String> whichIsShown = new ArrayList<>();
 
     private int secondsPass = 0;
     private Handler handler = new Handler();
@@ -139,13 +141,33 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
         Point size = new Point();
         display.getSize(size);
         width = size.x;
-        int[] i = new int[2];
-        rightAim.getLocationInWindow(i);
-        centreXR = i[0] + (rightAim.getWidth() / 2);
-        centreYR = i[1] - (rightAim.getHeight() / 4);
-        leftAim.getLocationInWindow(i);
-        centreXL = i[0] + (leftAim.getWidth() / 2);
-        centreYL = i[1] - (leftAim.getHeight() / 4);
+
+        rightAim.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            public void onGlobalLayout() {
+                rightAim.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+
+                int[] locations = new int[2];
+                rightAim.getLocationOnScreen(locations);
+                centreXR = locations[0];
+                centreYR = locations[1];
+            }
+        });
+
+
+        leftAim.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            public void onGlobalLayout() {
+                leftAim.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+
+                int[] locations = new int[2];
+                rightAim.getLocationOnScreen(locations);
+                centreXL = locations[0];
+                centreYL = locations[1];
+            }
+        });
+
+
+        centreXL = leftAim.getX() + leftAim.getWidth() / 2;
+        centreYL = leftAim.getY() + leftAim.getWidth() / 2;
     }
 
     @Override
@@ -237,8 +259,6 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
         @Override
         public boolean onTouch(View v, MotionEvent event) {
 
-            //  if (category != 0)
-
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     float x = event.getX();
@@ -250,25 +270,25 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
                 case MotionEvent.ACTION_MOVE:
                     break;
                 case MotionEvent.ACTION_UP:
-                    actionDown();
+                    actionUp();
                     break;
             }
             return true;
 
         }
 
-        private void actionDown() {
+        private void actionUp() {
             Date date;
             long time;
             if (measureFlag) {
                 date = new Date();
-                distanceLeft.add((float) -1);
-                distanceRight.add((float) -1);
+                XL.add((float) 0); //odległość nieistotna przy podnoszeniu palca
+                YL.add((float) 0);
+                XR.add((float) 0);
+                YR.add((float) 0);
                 time = date.getTime() - firstTime;
                 times.add(time);
-                String toData = time + ";" + "0" + ";" + "-1" + ";" + "-1" + "!";
-                data.append(toData);
-                sideValue.add(0);
+                sideValue.add("UP");
             }
         }
 
@@ -276,18 +296,17 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
             times.add(time);
             if (x > (width / 2)) { //prawa strona
                 float distance = calculateDist(centreXR, centreYR, x, y);
-                distanceRight.add(distance);
-                distanceLeft.add((float) -1);
-                String toData = time + ";" + 10 + ";" + distance + ";" + "-1" + "!";
-                data.append(toData);
-                sideValue.add(10);
+                XR.add(x);
+                YR.add(y);
+                YL.add((float) -1);
+                XL.add((float) -1);
+                sideValue.add("R");
             } else { //lewa strona
-                float distance = calculateDist(centreXL, centreYL, x, y);
-                distanceLeft.add(distance);
-                distanceRight.add((float) -1);
-                String toData = time + ";" + "-10" + ";" + "-1" + ";" + distance + "!";
-                data.append(toData);
-                sideValue.add(-10);
+                XL.add(x);
+                YL.add(y);
+                XR.add((float) -1);
+                YR.add((float) -1);
+                sideValue.add("L");
             }
         }
 
@@ -306,7 +325,7 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
         progressBar.setVisibility(View.INVISIBLE);
         changeAllVisibility(View.GONE);
         String fileName = generateFileName();
-        saveDataToFile(fileName);
+        saveDataToFile(fileName, dataToFile());
         collectData();
         saveToDatabase(fileName);
         clearData();
@@ -321,16 +340,16 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
         measuredData = new HashMap<>();
         times = new ArrayList<>();
         sideValue = new ArrayList<>();
-        distanceLeft = new ArrayList<>();
-        distanceRight = new ArrayList<>();
-        data = new StringBuilder();
+        XR = new ArrayList<>();
+        YR = new ArrayList<>();
+        XL = new ArrayList<>();
+        YL = new ArrayList<>();
         whichIsShown = new ArrayList<>();
         aimTime = new ArrayList<>();
     }
 
-    private void saveDataToFile(String fileName) {
-        data.append(userData.toString());
-        new FileOperations(this, fileName, data.toString()).saveData(true);
+    private void saveDataToFile(String fileName, String data) {
+        new FileOperations(this, fileName, data).saveData(true);
     }
 
     @NotNull
@@ -351,14 +370,70 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
         settings.put("time", time);
         settings.put("interval", interval);
         settings.put("category", category);
+        Map<String, Float> aims = new HashMap<>();
+        aims.put("XR", centreXR);
+        aims.put("YR", centreYR);
+        aims.put("XL", centreXL);
+        aims.put("YL", centreYL);
         measuredData.put("time", times);
         measuredData.put("sideValue", sideValue);
-        measuredData.put("distL", distanceLeft);
-        measuredData.put("distR", distanceRight);
+        measuredData.put("xR", XR);
+        measuredData.put("yR", YR);
+        measuredData.put("xL", XL);
+        measuredData.put("yL", YL);
         measuredData.put("user data", convertArrayToMap(userData));
         measuredData.put("shownAim", whichIsShown);
         measuredData.put("aimTime", aimTime);
         measuredData.put("settings", settings);
+        measuredData.put("aimsCoordinates", aims);
+    }
+
+    private String dataToFile() {
+        StringBuilder output = new StringBuilder();
+        String endOfLine = ";\n";
+        output.append("time:");
+        for (Long aLong : times) output.append(aLong).append(",");
+        output.append(endOfLine);
+
+        output.append("sideValue:");
+        for (String i : sideValue) output.append(i).append(",");
+        output.append(endOfLine);
+
+        output.append("XR:");
+        for (Float aFloat : XR) output.append(aFloat).append(",");
+        output.append(endOfLine);
+
+        output.append("YR:");
+        for (Float a : YR) output.append(a).append(",");
+        output.append(endOfLine);
+
+        output.append("XL:");
+        for (Float a : XL) output.append(a).append(",");
+        output.append(endOfLine);
+
+        output.append("YL:");
+        for (Float a : YL) output.append(a).append(",");
+        output.append(endOfLine);
+
+        output.append("userData:");
+        for (CharSequence ud : userData) output.append(ud).append(",");
+        output.append(endOfLine);
+
+        output.append("shownAim:");
+        for (String i : whichIsShown) output.append(i).append(",");
+        output.append(endOfLine);
+
+        output.append("aimTime:");
+        for (Long aLong : aimTime) output.append(aLong).append(",");
+        output.append(endOfLine);
+
+        output.append("settings:").append(time).append(",").append(interval).append(",").append(category).append(endOfLine);
+
+        output.append("aimsCoordinates:");
+        output.append(centreXR).append(",").append(centreYR).append(",").append(centreXL).append(",").append(centreYL);
+        output.append(endOfLine);
+
+        return output.toString();
     }
 
 
@@ -416,11 +491,11 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
         if (i1 == 1) { //lewa
             greenAndVisible(left);
             leftAim.setVisibility(View.VISIBLE);
-            whichIsShown.add(-1);
+            whichIsShown.add("L");
         } else { //prawa
             greenAndVisible(right);
             rightAim.setVisibility(View.VISIBLE);
-            whichIsShown.add(1);
+            whichIsShown.add("R");
         }
     }
 
@@ -430,11 +505,11 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
         if (flag) { //lewa
             greenAndVisible(left);
             leftAim.setVisibility(View.VISIBLE);
-            whichIsShown.add(-1);
+            whichIsShown.add("L");
         } else { //prawa
             greenAndVisible(right);
             rightAim.setVisibility(View.VISIBLE);
-            whichIsShown.add(1);
+            whichIsShown.add("R");
         }
     }
 
@@ -444,7 +519,7 @@ public class FingerTappingActivity extends AppCompatActivity implements Initiali
     }
 
     private void classicTapping() {
-        whichIsShown.add(-1);
+        whichIsShown.add("");
         leftAim.setVisibility(View.VISIBLE);
         rightAim.setVisibility(View.VISIBLE);
     }
