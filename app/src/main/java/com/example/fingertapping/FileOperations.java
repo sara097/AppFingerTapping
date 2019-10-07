@@ -57,9 +57,12 @@ class FileOperations {
     void saveData(boolean append) {
 
         try {
-            //utworzenie pliku do zapisu
-            File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-            File myFile = new File(path, name);
+
+            File root = android.os.Environment.getExternalStorageDirectory();
+            File dir = new File(root.getAbsolutePath() + "/MES/");
+
+            dir.mkdirs();
+            File myFile = new File(dir, name);
             FileOutputStream fOut = new FileOutputStream(myFile, append);
             OutputStreamWriter out = new OutputStreamWriter(fOut);
             //zapisanie do pliku
